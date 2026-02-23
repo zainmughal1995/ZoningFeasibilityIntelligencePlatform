@@ -1,0 +1,45 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "zone_code": "R1",
+        "max_height": 45,
+        "max_far": 0.5
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-118.25, 34.05],
+            [-118.24, 34.05],
+            [-118.24, 34.06],
+            [-118.25, 34.06],
+            [-118.25, 34.05]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "zone_code": "C4",
+        "max_height": 150,
+        "max_far": 6.0
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-118.24, 34.05],
+            [-118.23, 34.05],
+            [-118.23, 34.06],
+            [-118.24, 34.06],
+            [-118.24, 34.05]
+          ]
+        ]
+      }
+    }
+  ]
+}

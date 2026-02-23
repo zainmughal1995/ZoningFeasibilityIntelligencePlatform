@@ -1,34 +1,28 @@
-// feasibilityStore.js → Result returned from backend.
 import { create } from "zustand";
 
 const useFeasibilityStore = create((set) => ({
   result: null,
-  loading: false,
   error: null,
+  highlightedZone: null,
 
-  setLoading: (value) =>
-    set(() => ({
-      loading: value,
-      error: null,
-    })),
-
-  setResult: (data) =>
+  setResult: (data, zone) =>
     set(() => ({
       result: data,
-      loading: false,
+      highlightedZone: zone,
       error: null,
     })),
 
   setError: (message) =>
     set(() => ({
       error: message,
-      loading: false,
+      result: null,
+      highlightedZone: null,
     })),
 
   clearResult: () =>
     set(() => ({
       result: null,
-      loading: false,
+      highlightedZone: null,
       error: null,
     })),
 }));

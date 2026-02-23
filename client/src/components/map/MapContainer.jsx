@@ -1,33 +1,42 @@
-import { useRef } from "react";
-import React from "react";
+import React, { useRef } from "react";
 import {
   MapContainer as LeafletMap,
   TileLayer,
   FeatureGroup,
+  useMap,
 } from "react-leaflet";
 import { EditControl } from "react-leaflet-draw";
-import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-draw/dist/leaflet.draw.css";
-import useParcelStore from "../../store/parcelStore";
 
-// Fix Leaflet marker icon issue in Vite
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl:
-    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-});
+import useParcelStore from "../../store/parcelStore";
+import useCityStore from "../../store/cityStore";
+import ZoningLayer from "../../features/zoning/ZoningLayer";
+
+/* 🔹 This component forces map to update when city changes */
+function MapUpdater({ center, zoom, onCityChange }) {
+  const map = useMap();
+
+  React.useEffect(() => {
+    map.setView(center, zoom);
+    if (onCityChange) onCityChange();
+  }, [center, zoom]);
+
+  return null;
+}
 
 function MapContainer() {
   const featureGroupRef = useRef(null);
+
   const setParcel = useParcelStore((state) => state.setParcel);
   const clearParcel = useParcelStore((state) => state.clearParcel);
 
+  const { selectedCity, cities } = useCityStore();
+  const cityData = cities[selectedCity];
+
   const onCreated = (e) => {
-    const layer = e.layer;
-    const geojson = layer.toGeoJSON();
+    const geojson = e.layer.toGeoJSON();
+    console.log("Drawn GeoJSON:", geojson);
     setParcel(geojson.geometry);
   };
 
@@ -36,32 +45,42 @@ function MapContainer() {
   };
 
   return (
-    <LeafletMap
-      center={[40.7128, -74.006]} // NYC default
-      zoom={13}
-      className="w-full h-full"
-    >
-      <TileLayer
-        attribution="&copy; OpenStreetMap contributors"
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
-
-      <FeatureGroup ref={featureGroupRef}>
-        <EditControl
-          position="topright"
-          onCreated={onCreated}
-          onDeleted={onDeleted}
-          draw={{
-            rectangle: true,
-            polygon: true,
-            circle: false,
-            circlemarker: false,
-            marker: false,
-            polyline: false,
-          }}
+    <div className="w-full h-full">
+      <LeafletMap
+        center={cityData.center}
+        zoom={cityData.zoom}
+        className="w-full h-full"
+      >
+        <MapUpdater
+          center={cityData.center}
+          zoom={cityData.zoom}
+          onCityChange={clearParcel}
         />
-      </FeatureGroup>
-    </LeafletMap>
+
+        <TileLayer
+          attribution="&copy; OpenStreetMap contributors"
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+
+        <ZoningLayer />
+
+        <FeatureGroup ref={featureGroupRef}>
+          <EditControl
+            position="topright"
+            onCreated={onCreated}
+            onDeleted={onDeleted}
+            draw={{
+              rectangle: true,
+              polygon: true,
+              circle: false,
+              circlemarker: false,
+              marker: false,
+              polyline: false,
+            }}
+          />
+        </FeatureGroup>
+      </LeafletMap>
+    </div>
   );
 }
 

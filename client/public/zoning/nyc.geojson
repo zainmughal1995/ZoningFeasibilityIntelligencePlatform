@@ -1,0 +1,45 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "zone_code": "R6",
+        "max_height": 70,
+        "max_far": 2.43
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-74.01, 40.71],
+            [-74.0, 40.71],
+            [-74.0, 40.72],
+            [-74.01, 40.72],
+            [-74.01, 40.71]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "zone_code": "C2",
+        "max_height": 120,
+        "max_far": 4.0
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-74.0, 40.71],
+            [-73.99, 40.71],
+            [-73.99, 40.72],
+            [-74.0, 40.72],
+            [-74.0, 40.71]
+          ]
+        ]
+      }
+    }
+  ]
+}
