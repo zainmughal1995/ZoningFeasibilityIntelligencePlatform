@@ -4,12 +4,23 @@ const useFeasibilityStore = create((set) => ({
   result: null,
   error: null,
   highlightedZone: null,
+  history: [],
 
   setResult: (data, zone) =>
-    set(() => ({
+    set((state) => ({
       result: data,
       highlightedZone: zone,
       error: null,
+      history: [
+        {
+          id: Date.now(),
+          date: new Date().toLocaleString(),
+          zone: data.zone_code,
+          roi: data.roi, // ✅ save ROI
+          rating: data.rating, // ✅ save rating
+        },
+        ...state.history,
+      ],
     })),
 
   setError: (message) =>

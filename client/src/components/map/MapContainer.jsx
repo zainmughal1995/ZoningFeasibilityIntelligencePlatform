@@ -13,6 +13,8 @@ import useParcelStore from "../../store/parcelStore";
 import useCityStore from "../../store/cityStore";
 import ZoningLayer from "../../features/zoning/ZoningLayer";
 
+import L from "leaflet";
+
 /* 🔹 This component forces map to update when city changes */
 function MapUpdater({ center, zoom, onCityChange }) {
   const map = useMap();
@@ -35,9 +37,25 @@ function MapContainer() {
   const cityData = cities[selectedCity];
 
   const onCreated = (e) => {
-    const geojson = e.layer.toGeoJSON();
-    console.log("Drawn GeoJSON:", geojson);
-    setParcel(geojson.geometry);
+    const layer = e.layer;
+    const geojson = layer.toGeoJSON();
+
+    const latlngs = layer.getLatLngs()[0];
+
+    const area = L.GeometryUtil
+      ? L.GeometryUtil.geodesicArea(latlngs)
+      : L.GeometryUtil;
+
+    const centroid = [
+      latlngs.reduce((sum, p) => sum + p.lng, 0) / latlngs.length,
+      latlngs.reduce((sum, p) => sum + p.lat, 0) / latlngs.length,
+    ];
+
+    setParcel({
+      geometry: geojson.geometry,
+      area,
+      centroid,
+    });
   };
 
   const onDeleted = () => {

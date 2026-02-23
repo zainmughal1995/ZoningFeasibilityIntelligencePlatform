@@ -1,17 +1,16 @@
-// parcelStore.js → Current parcel geometry + metadata.
 import { create } from "zustand";
 
 const useParcelStore = create((set) => ({
-  parcelGeometry: null,
+  parcel: null,
 
-  setParcel: (geometry) =>
+  setParcel: (data) =>
     set(() => ({
-      parcelGeometry: geometry,
+      parcel: data,
     })),
 
   clearParcel: () =>
     set(() => ({
-      parcelGeometry: null,
+      parcel: null,
     })),
 }));
 
