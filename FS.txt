@@ -1,0 +1,127 @@
+zoning-feasibility-frontend/
+│
+├── public/
+│
+├── src/
+│
+│   ├── app/                         # App bootstrap
+│   │   ├── router.jsx
+│   │   ├── AppLayout.jsx
+│   │   └── providers.jsx
+│   │
+│   ├── store/                       # Global state (Zustand slices)
+│   │   ├── authStore.js
+│   │   ├── cityStore.js
+│   │   ├── parcelStore.js
+│   │   └── feasibilityStore.js
+│   │
+│   ├── features/                    # Domain-based modules
+│   │   ├── parcel/
+│   │   │   ├── ParcelMap.jsx
+│   │   │   ├── ParcelForm.jsx
+│   │   │   └── parcelService.js
+│   │   │
+│   │   ├── zoning/
+│   │   │   ├── ZoningLayer.jsx
+│   │   │   └── zoningService.js
+│   │   │
+│   │   └── feasibility/
+│   │       ├── FeasibilityPanel.jsx
+│   │       ├── ScoreCard.jsx
+│   │       ├── MetricsChart.jsx
+│   │       └── feasibilityService.js
+│   │
+│   ├── components/                  # Reusable UI
+│   │   ├── layout/
+│   │   │   ├── Navbar.jsx
+│   │   │   ├── Sidebar.jsx
+│   │   │   └── Layout.jsx
+│   │   │
+│   │   ├── ui/
+│   │   │   ├── Button.jsx
+│   │   │   ├── Card.jsx
+│   │   │   ├── Modal.jsx
+│   │   │   ├── Input.jsx
+│   │   │   └── Loader.jsx
+│   │   │
+│   │   └── map/
+│   │       ├── MapContainer.jsx
+│   │       ├── DrawControls.jsx
+│   │       └── LayerControl.jsx
+│   │
+│   ├── pages/                       # Route-level pages
+│   │   ├── Dashboard.jsx
+│   │   ├── Analysis.jsx
+│   │   ├── History.jsx
+│   │   └── NotFound.jsx
+│   │
+│   ├── services/                    # API layer
+│   │   ├── apiClient.js
+│   │   └── endpoints.js
+│   │
+│   ├── hooks/
+│   │   ├── useMap.js
+│   │   └── useFeasibility.js
+│   │
+│   ├── utils/
+│   │   ├── geoUtils.js
+│   │   └── formatters.js
+│   │
+│   ├── styles/
+│   │   └── index.css
+│   │
+│   ├── main.jsx
+│   └── App.jsx
+│
+├── tailwind.config.js
+├── postcss.config.js
+├── vite.config.js
+└── package.json
+
+
+                         ┌─────────────────────┐
+                         │        main.jsx      │
+                         │   (App entry point)  │
+                         └──────────┬──────────┘
+                                    │
+                         ┌──────────▼──────────┐
+                         │        App.jsx       │
+                         └──────────┬──────────┘
+                                    │
+                         ┌──────────▼──────────┐
+                         │      app/ layer      │
+                         │ router + layout      │
+                         └──────────┬──────────┘
+                                    │
+        ┌───────────────────────────┼───────────────────────────┐
+        │                           │                           │
+┌───────▼────────┐         ┌────────▼────────┐         ┌────────▼────────┐
+│     pages/      │         │    features/     │         │    components/  │
+│ Route views     │         │ Business logic   │         │ Reusable UI     │
+└───────┬────────┘         └────────┬────────┘         └────────┬────────┘
+        │                             │                          │
+        │                             │                          │
+        │                   ┌─────────▼─────────┐                │
+        │                   │     services/      │                │
+        │                   │  API communication │                │
+        │                   └─────────┬─────────┘                │
+        │                             │                          │
+        │                   ┌─────────▼─────────┐                │
+        │                   │      store/        │                │
+        │                   │  Global state      │                │
+        │                   └─────────┬─────────┘                │
+        │                             │                          │
+        │                   ┌─────────▼─────────┐                │
+        │                   │      hooks/        │                │
+        │                   │  Shared logic      │                │
+        │                   └─────────┬─────────┘                │
+        │                             │                          │
+        │                   ┌─────────▼─────────┐                │
+        │                   │      utils/        │                │
+        │                   │ Pure helper funcs  │                │
+        │                   └────────────────────┘                │
+        │
+┌───────▼────────┐
+│   styles/       │
+│  Tailwind base  │
+└─────────────────┘
